@@ -245,7 +245,7 @@ function Profile() {
                 color: 'white',
                 fontSize: 15,
                 letterSpacing: 1.5,
-                fontWeight: 'bold',
+                fontWeight: 'semibold',
               }}>
               Sign Out
             </Text>
