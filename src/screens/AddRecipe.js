@@ -10,6 +10,7 @@ import {
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {COLOR_GRAY} from '../assets/color/color';
 
 function AddRecipe() {
   return (
@@ -62,8 +63,8 @@ function AddRecipe() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
-                  borderColor: 'grey',
-                  backgroundColor: 'grey',
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
                 }}
               />
@@ -96,8 +97,8 @@ function AddRecipe() {
                   height: 150,
                   width: '100%',
                   borderRadius: 10,
-                  borderColor: 'grey',
-                  backgroundColor: 'grey',
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
                 }}
               />
@@ -132,8 +133,8 @@ function AddRecipe() {
                   height: 150,
                   width: '100%',
                   borderRadius: 10,
-                  borderColor: 'grey',
-                  backgroundColor: 'grey',
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
                 }}
               />
@@ -161,7 +162,7 @@ function AddRecipe() {
             // }}
             style={{
               backgroundColor: '#EFBC5D',
-              height: 48,
+              height: 40,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 10,

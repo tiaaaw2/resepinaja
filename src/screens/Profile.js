@@ -11,6 +11,7 @@ import {
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {COLOR_GRAY} from '../assets/color/color';
 
 function Profile() {
   return (
@@ -84,8 +85,8 @@ function Profile() {
               width: '100%',
               color: '#EFBC5D',
               borderRadius: 10,
-              borderColor: 'grey',
-              backgroundColor: 'grey',
+              borderColor: COLOR_GRAY.LIGHTEST,
+              backgroundColor: COLOR_GRAY.LIGHTEST,
               borderWidth: 2,
             }}
           />
@@ -115,8 +116,8 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
-                  borderColor: 'grey',
-                  backgroundColor: 'grey',
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
                   paddingRight: 50,
                 }}
@@ -155,8 +156,8 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
-                  borderColor: 'grey',
-                  backgroundColor: 'grey',
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
                   paddingRight: 50,
                 }}
@@ -195,8 +196,8 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
-                  borderColor: 'grey',
-                  backgroundColor: 'grey',
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
                   paddingRight: 50,
                 }}
@@ -224,7 +225,7 @@ function Profile() {
             }}
             style={{
               backgroundColor: '#EFBC5D',
-              height: 48,
+              height: 40,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 10,
@@ -247,7 +248,7 @@ function Profile() {
                 letterSpacing: 1.5,
                 fontWeight: 'semibold',
               }}>
-              Sign Out
+              Log Out
             </Text>
           </TouchableOpacity>
         </View>
