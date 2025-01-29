@@ -44,7 +44,7 @@ function Home() {
             placeholder="search recipe"
             style={{
               marginTop: 10,
-              marginBottom: 50,
+              marginBottom: 40,
               paddingHorizontal: 20,
               height: 50,
               width: '100%',
@@ -67,8 +67,97 @@ function Home() {
                 height: 170,
                 borderRadius: 15,
                 marginLeft: 7,
+                position: 'relative',
               }}
             />
+            <View
+              style={{
+                position: 'absolute',
+                width: '97%',
+                height: 170,
+                marginLeft: 7,
+                backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                borderRadius: 15,
+              }}
+            />
+            <Text
+              style={{
+                padding: 10,
+                color: 'white',
+                position: 'absolute',
+                fontSize: 20,
+                fontWeight: '500',
+                marginLeft: 110,
+                letterSpacing: 1,
+              }}>
+              Mangut Ikan Nila
+            </Text>
+            {/* waktunya */}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                gap: 5,
+                alignItems: 'center',
+                position: 'absolute',
+                right: 10,
+                padding: 10,
+                marginTop: 30,
+              }}>
+              <Image
+                source={require('./../assets/clock.png')}
+                style={{
+                  width: 15,
+                  height: 15,
+                  tintColor: 'white',
+                }}
+              />
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    fontWeight: 'bold',
+                    fontSize: 12,
+                    color: 'white',
+                  }}>
+                  50 min
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {/* pembuat */}
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                gap: 5,
+                alignItems: 'center',
+                position: 'absolute',
+                marginLeft: 25,
+                marginTop: 135,
+              }}>
+              <Image
+                source={{
+                  uri: 'https://siplah-oss.tokoladang.co.id/merchant/17185/product/6lpxX1FSfLXdLpJQZCws5R0Lsih2IxxBfSgwGoxs.jpg',
+                }}
+                style={{
+                  width: 25,
+                  height: 25,
+                  borderRadius: 100,
+                  backgroundColor: 'red',
+                }}
+              />
+              <TouchableOpacity>
+                <Text
+                  style={{
+                    textAlign: 'right',
+                    fontWeight: 'semibold',
+                    fontSize: 13,
+                    color: 'white',
+                  }}>
+                  Agus
+                </Text>
+              </TouchableOpacity>
+            </View>
           </TouchableOpacity>
         </View>
         {/* RECIPE */}
