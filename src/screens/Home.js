@@ -15,6 +15,15 @@ import {COLOR_GRAY} from '../assets/color/color';
 
 function Home() {
   const navigation = useNavigation();
+  // var resep = [];
+  // for (let i = 1; i < 6; i++) {
+  //   resep.push(
+  //   ,
+  //   );
+  // }
+
+  console.log('123');
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View style={{padding: 25}}>
@@ -56,109 +65,121 @@ function Home() {
           />
         </View>
         {/* CARI */}
-
         {/* RECIPE */}
         <View>
-          <TouchableOpacity>
-            <Image
-              source={require('./../assets/ikanNila.jpg')}
-              style={{
-                width: '97%',
-                height: 170,
-                borderRadius: 15,
-                marginLeft: 7,
-                position: 'relative',
-              }}
-            />
-            <View
-              style={{
-                position: 'absolute',
-                width: '97%',
-                height: 170,
-                marginLeft: 7,
-                backgroundColor: 'rgba(0, 0, 0, 0.4)',
-                borderRadius: 15,
-              }}
-            />
-            <Text
-              style={{
-                padding: 10,
-                color: 'white',
-                position: 'absolute',
-                fontSize: 20,
-                fontWeight: '500',
-                marginLeft: 110,
-                letterSpacing: 1,
-              }}>
-              Mangut Ikan Nila
-            </Text>
-            {/* waktunya */}
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-end',
-                gap: 5,
-                alignItems: 'center',
-                position: 'absolute',
-                right: 10,
-                padding: 10,
-                marginTop: 30,
-              }}>
-              <Image
-                source={require('./../assets/clock.png')}
-                style={{
-                  width: 15,
-                  height: 15,
-                  tintColor: 'white',
-                }}
-              />
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    fontWeight: 'bold',
-                    fontSize: 12,
-                    color: 'white',
-                  }}>
-                  50 min
-                </Text>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  navigation.navigate('Ingredients');
+                }}>
+                <View style={{margin: 5}}>
+                  <View>
+                    <Image
+                      source={require('./../assets/ikanNila.jpg')}
+                      style={{
+                        width: '97%',
+                        height: 170,
+                        borderRadius: 15,
+                        marginLeft: 7,
+                        position: 'relative',
+                      }}
+                    />
+                    <View
+                      style={{
+                        position: 'absolute',
+                        width: '97%',
+                        height: 170,
+                        marginLeft: 7,
+                        backgroundColor: 'rgba(0, 0, 0, 0.4)',
+                        borderRadius: 15,
+                      }}
+                    />
+                    <Text
+                      style={{
+                        padding: 10,
+                        color: 'white',
+                        position: 'absolute',
+                        fontSize: 20,
+                        fontWeight: '500',
+                        marginLeft: 110,
+                        letterSpacing: 1,
+                      }}>
+                      Mangut Ikan Nila
+                    </Text>
+                    {/* waktunya */}
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-end',
+                        gap: 5,
+                        alignItems: 'center',
+                        position: 'absolute',
+                        right: 10,
+                        padding: 10,
+                        marginTop: 30,
+                      }}>
+                      <Image
+                        source={require('./../assets/clock.png')}
+                        style={{
+                          width: 15,
+                          height: 15,
+                          tintColor: 'white',
+                        }}
+                      />
+                      <View>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            fontWeight: 'bold',
+                            fontSize: 12,
+                            color: 'white',
+                          }}>
+                          50 min
+                        </Text>
+                      </View>
+                    </View>
+                    {/* pembuat */}
+
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'flex-start',
+                        gap: 5,
+                        alignItems: 'center',
+                        position: 'absolute',
+                        marginLeft: 25,
+                        marginTop: 135,
+                      }}>
+                      <Image
+                        source={{
+                          uri: 'https://siplah-oss.tokoladang.co.id/merchant/17185/product/6lpxX1FSfLXdLpJQZCws5R0Lsih2IxxBfSgwGoxs.jpg',
+                        }}
+                        style={{
+                          width: 25,
+                          height: 25,
+                          borderRadius: 100,
+                          backgroundColor: 'red',
+                        }}
+                      />
+                      <View>
+                        <Text
+                          style={{
+                            textAlign: 'right',
+                            fontWeight: 'semibold',
+                            fontSize: 13,
+                            color: 'white',
+                          }}>
+                          Agus
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                </View>
               </TouchableOpacity>
-            </View>
-            {/* pembuat */}
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'flex-start',
-                gap: 5,
-                alignItems: 'center',
-                position: 'absolute',
-                marginLeft: 25,
-                marginTop: 135,
-              }}>
-              <Image
-                source={{
-                  uri: 'https://siplah-oss.tokoladang.co.id/merchant/17185/product/6lpxX1FSfLXdLpJQZCws5R0Lsih2IxxBfSgwGoxs.jpg',
-                }}
-                style={{
-                  width: 25,
-                  height: 25,
-                  borderRadius: 100,
-                  backgroundColor: 'red',
-                }}
-              />
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    textAlign: 'right',
-                    fontWeight: 'semibold',
-                    fontSize: 13,
-                    color: 'white',
-                  }}>
-                  Agus
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
+            );
+          })}
         </View>
         {/* RECIPE */}
       </View>

@@ -8,6 +8,7 @@ import Login from './src/screens/Login';
 import Regis from './src/screens/Regis';
 import Profile from './src/screens/Profile';
 import AddRecipe from './src/screens/AddRecipe';
+import Ingredients from './src/screens/Ingredients';
 
 const Tab = createBottomTabNavigator();
 
@@ -77,6 +78,7 @@ function RootStack() {
       <Stack.Screen name="Regis" component={Regis} />
       <Stack.Screen name="MyTabs" component={MyTabs} />
       <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="Ingredients" component={Ingredients} />
     </Stack.Navigator>
   );
 }
