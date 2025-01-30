@@ -76,6 +76,40 @@ function AddRecipe() {
                 }}></TouchableOpacity>
             </View>
           </View>
+          {/* title */}
+          <View>
+            <Text style={{fontWeight: 'bold', fontSize: 16}}>Title</Text>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: 10,
+            }}>
+            <View style={{flex: 1}}>
+              <TextInput
+                placeholder="add title  "
+                style={{
+                  paddingHorizontal: 20,
+                  marginTop: 10,
+                  marginBottom: 10,
+                  height: 50,
+                  width: '100%',
+                  borderRadius: 10,
+                  borderColor: COLOR_GRAY.LIGHTEST,
+                  backgroundColor: COLOR_GRAY.LIGHTEST,
+                  borderWidth: 2,
+                }}
+              />
+              <TouchableOpacity
+                style={{
+                  position: 'absolute',
+                  right: 20,
+                  top: '35%',
+                }}></TouchableOpacity>
+            </View>
+          </View>
           {/* ingradient */}
           <View>
             <Text style={{fontWeight: 'bold', fontSize: 16}}>Ingradient</Text>

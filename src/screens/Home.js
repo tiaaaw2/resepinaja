@@ -63,7 +63,11 @@ function Home() {
             <TouchableOpacity
               key={index}
               onPress={() => {
-                navigation.navigate('Ingredients');
+                navigation.navigate('Ingredients', {
+                  title: item.title,
+                  ingred: item.ingredients,
+                  step: item.steps,
+                });
               }}>
               <View style={{margin: 5}}>
                 <View>
