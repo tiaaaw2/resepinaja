@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -6,28 +6,54 @@ import {
   Image,
   TextInput,
   ScrollView,
+  RefreshControl,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import axios from 'axios';
+import ProfileInitial from '../components/ProfileInitial';
 
 function Home() {
   const navigation = useNavigation();
   const [recipes, setRecipes] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('http://192.168.219.118/api-resep/resep.php', {
-      method: 'GET',
-      mode: 'no-cors',
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-        setRecipes(data);
-      })
-      .catch(error => console.error('Error fetching data:', error));
+    fetchRecipes();
+  }, []);
+
+  const fetchRecipes = async () => {
+    try {
+      const response = await axios.get(
+        'http://192.168.183.118/API-RESEP/get_resep.php',
+      );
+      if (response.data.status === 'success') {
+        setRecipes(response.data.data);
+      } else {
+        console.error('No recipes found');
+      }
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      fetchRecipes();
+      setRefreshing(false);
+    }, 2000);
   }, []);
 
   return (
-    <ScrollView showsVerticalScrollIndicator={false}>
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={{padding: 25}}>
         {/* HEADER */}
         <View>
@@ -67,6 +93,7 @@ function Home() {
                   title: item.title,
                   ingred: item.ingredients,
                   step: item.steps,
+                  gbr: item.image_url,
                 });
               }}>
               <View style={{margin: 5}}>
@@ -103,40 +130,7 @@ function Home() {
                     }}>
                     {item.title}
                   </Text>
-                  {/* waktunya */}
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'flex-end',
-                      gap: 5,
-                      alignItems: 'center',
-                      position: 'absolute',
-                      right: 10,
-                      padding: 10,
-                      marginTop: 30,
-                    }}>
-                    <Image
-                      source={require('./../assets/clock.png')}
-                      style={{
-                        width: 15,
-                        height: 15,
-                        tintColor: 'white',
-                      }}
-                    />
-                    <View>
-                      <Text
-                        style={{
-                          textAlign: 'right',
-                          fontWeight: 'bold',
-                          fontSize: 12,
-                          color: 'white',
-                        }}>
-                        {item.duration} min
-                      </Text>
-                    </View>
-                  </View>
                   {/* pembuat */}
-
                   <View
                     style={{
                       flexDirection: 'row',
@@ -147,17 +141,13 @@ function Home() {
                       marginLeft: 25,
                       marginTop: 135,
                     }}>
-                    <Image
-                      source={{
-                        uri: 'https://siplah-oss.tokoladang.co.id/merchant/17185/product/6lpxX1FSfLXdLpJQZCws5R0Lsih2IxxBfSgwGoxs.jpg',
-                      }}
-                      style={{
-                        width: 25,
-                        height: 25,
-                        borderRadius: 100,
-                        backgroundColor: 'red',
-                      }}
+                    <ProfileInitial
+                      nama={item.user_name}
+                      ukuran={25}
+                      warnaLatar="#3498db"
+                      warnaTeks="#ffffff"
                     />
+
                     <View>
                       <Text
                         style={{
@@ -166,7 +156,7 @@ function Home() {
                           fontSize: 13,
                           color: 'white',
                         }}>
-                        {item.author}
+                        {item.user_name}
                       </Text>
                     </View>
                   </View>

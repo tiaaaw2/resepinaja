@@ -3,8 +3,38 @@ import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import axios from 'axios';
 
 function Regis() {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const postRegis = async () => {
+    try {
+      const response = await axios.post(
+        'http://192.168.183.118/API-RESEP/register.php',
+        {
+          //nama body dan nama variabel
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (response.data.status === 'success') {
+        console.log('Recipe added successfully');
+        navigation.goBack();
+      } else {
+        console.error('Error adding recipe:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error posting recipe:', error);
+    }
+  };
+
   const navigation = useNavigation();
   return (
     <View>
@@ -62,7 +92,7 @@ function Regis() {
           padding: 20,
         }}>
         <TextInput
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => setPassword(text)}
           placeholder="Password"
           style={{
             marginTop: -20,
@@ -81,7 +111,7 @@ function Regis() {
           padding: 20,
         }}>
         <TextInput
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => setPassword(text)}
           placeholder="Confirm Password"
           style={{
             marginTop: -20,
@@ -105,7 +135,8 @@ function Regis() {
         }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+            postRegis();
+            // navigation.goBack();
           }}
           style={{
             backgroundColor: '#EFBC5D',
@@ -139,7 +170,7 @@ function Regis() {
         <Text>Already have account? </Text>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate('Login');
+            navigation.goBack();
           }}>
           <Text
             style={{

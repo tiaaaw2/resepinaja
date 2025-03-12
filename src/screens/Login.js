@@ -3,8 +3,38 @@ import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import axios from 'axios';
 
 function Login() {
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+
+  const postLogin = async () => {
+    try {
+      const response = await axios.post(
+        'http://192.168.183.118/API-RESEP/login.php',
+        {
+          //nama body dan nama variabel
+          email: email,
+          password: password,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (response.data.status === 'success') {
+        console.log('Recipe added successfully');
+        navigation.replace('MyTabs');
+      } else {
+        console.error('Error adding recipe:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error posting recipe:', error);
+    }
+  };
+
   const navigation = useNavigation();
   return (
     <View>
@@ -62,7 +92,7 @@ function Login() {
           padding: 20,
         }}>
         <TextInput
-          onChangeText={text => setEmail(text)}
+          onChangeText={text => setPassword(text)}
           placeholder="Password"
           style={{
             marginTop: -20,
@@ -86,7 +116,8 @@ function Login() {
         }}>
         <TouchableOpacity
           onPress={() => {
-            navigation.replace('MyTabs');
+            //pnggil fungsi
+            postLogin();
           }}
           style={{
             backgroundColor: '#EFBC5D',

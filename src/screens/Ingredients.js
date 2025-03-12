@@ -14,6 +14,7 @@ function Ingredients({route}) {
   const {title} = route.params;
   const {ingred} = route.params;
   const {step} = route.params;
+  const {gbr} = route.params;
   const [activeTab, setActiveTab] = React.useState(0);
   const navigation = useNavigation();
 
@@ -37,7 +38,7 @@ function Ingredients({route}) {
           // padding: 30,
         }}>
         <ImageBackground
-          source={require('./../assets/nasigoreng.jpg')}
+          source={{uri: gbr}}
           style={{
             width: '100%',
             height: 250,

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -11,8 +11,45 @@ import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLOR_GRAY} from '../assets/color/color';
+import axios from 'axios';
 
 function AddRecipe() {
+  //
+  const [imageUrl, setImageUrl] = useState('');
+  const [title, setTitle] = useState('');
+  const [cookingSteps, setCookingSteps] = useState('');
+  const [ingredients, setIngredients] = useState('');
+
+  const postRecipes = async () => {
+    try {
+      const response = await axios.post(
+        'http://192.168.183.118/API-RESEP/post_resep.php',
+        {
+          //nama body dan nama variabel
+          title: title,
+          id: 1,
+          ingredients: ingredients,
+          steps: cookingSteps,
+          image_url: imageUrl,
+        },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
+      if (response.data.status === 'success') {
+        console.log('Recipe added successfully');
+        navigation.navigate('Home');
+      } else {
+        console.error('Error adding recipe:', response.data.message);
+      }
+    } catch (error) {
+      console.error('Error posting recipe:', error);
+    }
+  };
+
+  const navigation = useNavigation();
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View>
@@ -55,6 +92,8 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                // menampung aksi mengetik
+                onChangeText={text => setImageUrl(text)}
                 placeholder="upload gamabr makanan "
                 style={{
                   paddingHorizontal: 20,
@@ -89,6 +128,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                onChangeText={text => setTitle(text)}
                 placeholder="add title  "
                 style={{
                   paddingHorizontal: 20,
@@ -123,6 +163,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                onChangeText={text => setIngredients(text)}
                 placeholder="add ur ingradient "
                 style={{
                   paddingHorizontal: 20,
@@ -159,6 +200,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                onChangeText={text => setCookingSteps(text)}
                 placeholder="How To Cook? "
                 style={{
                   paddingHorizontal: 20,
@@ -191,9 +233,9 @@ function AddRecipe() {
             marginBottom: 20,
           }}>
           <TouchableOpacity
-            // onPress={() => {
-            //   navigation.replace('Login');
-            // }}
+            onPress={() => {
+              postRecipes();
+            }}
             style={{
               backgroundColor: '#EFBC5D',
               height: 40,
