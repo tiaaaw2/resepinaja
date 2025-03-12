@@ -9,6 +9,7 @@ import Regis from './src/screens/Regis';
 import Profile from './src/screens/Profile';
 import AddRecipe from './src/screens/AddRecipe';
 import Ingredients from './src/screens/Ingredients';
+import SplashScreen from './src/screens/SplashScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -73,7 +74,10 @@ function RootStack() {
   return (
     // pindah pindah tab
 
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator
+      initialRouteName="SplashScreen"
+      screenOptions={{headerShown: false}}>
+      <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Regis" component={Regis} />
       <Stack.Screen name="MyTabs" component={MyTabs} />
