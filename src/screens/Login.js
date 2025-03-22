@@ -1,9 +1,18 @@
 import * as React from 'react';
-import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Alert,
+} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../../env';
 
 function Login() {
   const [email, setEmail] = React.useState('');
@@ -12,7 +21,7 @@ function Login() {
   const postLogin = async () => {
     try {
       const response = await axios.post(
-        'http://192.168.183.118/API-RESEP/login.php',
+        `${BASE_URL}/API-RESEP/login.php`,
         {
           //nama body dan nama variabel
           email: email,
@@ -25,13 +34,17 @@ function Login() {
         },
       );
       if (response.data.status === 'success') {
-        console.log('Recipe added successfully');
+        console.log('login successfully');
+        console.log(response.data.user.id);
+        await AsyncStorage.setItem('userId', response.data.user.id.toString());
         navigation.replace('MyTabs');
       } else {
         console.error('Error adding recipe:', response.data.message);
+        Alert.alert(response?.data?.message || 'Gagal Login');
       }
     } catch (error) {
       console.error('Error posting recipe:', error);
+      Alert.alert(error.response.data.message || 'Gagal Login');
     }
   };
 

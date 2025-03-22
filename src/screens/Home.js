@@ -11,6 +11,7 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import ProfileInitial from '../components/ProfileInitial';
+import {BASE_URL} from '../../env';
 
 function Home() {
   const navigation = useNavigation();
@@ -23,9 +24,7 @@ function Home() {
 
   const fetchRecipes = async () => {
     try {
-      const response = await axios.get(
-        'http://192.168.183.118/API-RESEP/get_resep.php',
-      );
+      const response = await axios.get(`${BASE_URL}/API-RESEP/get_resep.php`);
       if (response.data.status === 'success') {
         setRecipes(response.data.data);
       } else {
@@ -48,6 +47,23 @@ function Home() {
     }, 2000);
   }, []);
 
+  const ucapan = () => {
+    const jam = new Date().getHours();
+    let ucapan;
+
+    if (jam >= 5 && jam < 12) {
+      ucapan = 'Selamat Pagi!';
+    } else if (jam >= 12 && jam < 15) {
+      ucapan = 'Selamat Siang!';
+    } else if (jam >= 15 && jam < 18) {
+      ucapan = 'Selamat Sore!';
+    } else {
+      ucapan = 'Selamat Malam!';
+    }
+
+    return ucapan;
+  };
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -58,7 +74,7 @@ function Home() {
         {/* HEADER */}
         <View>
           <Text style={{fontSize: 25, fontWeight: 'bold', marginTop: 7}}>
-            Hi Faisss_1
+            {ucapan()}
           </Text>
           <Text style={{fontSize: 17, marginTop: 40, textAlign: 'center'}}>
             What food do you want to cook today?

@@ -6,12 +6,15 @@ import {
   Image,
   TextInput,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLOR_GRAY} from '../assets/color/color';
 import axios from 'axios';
+import {BASE_URL} from '../../env';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AddRecipe() {
   //
@@ -21,31 +24,44 @@ function AddRecipe() {
   const [ingredients, setIngredients] = useState('');
 
   const postRecipes = async () => {
-    try {
-      const response = await axios.post(
-        'http://192.168.183.118/API-RESEP/post_resep.php',
-        {
-          //nama body dan nama variabel
-          title: title,
-          id: 1,
-          ingredients: ingredients,
-          steps: cookingSteps,
-          image_url: imageUrl,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
+    console.log('test');
+
+    const userId = await AsyncStorage.getItem('userId');
+
+    console.log('id', userId);
+
+    if (userId) {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/API-RESEP/post_resep.php`,
+          {
+            //nama body dan nama variabel
+            title: title,
+            id: parseInt(userId),
+            ingredients: ingredients,
+            steps: cookingSteps,
+            image_url: imageUrl,
           },
-        },
-      );
-      if (response.data.status === 'success') {
-        console.log('Recipe added successfully');
-        navigation.navigate('Home');
-      } else {
-        console.error('Error adding recipe:', response.data.message);
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        if (response.data.status === 'success') {
+          console.log('Recipe added successfully');
+          Alert.alert('add Recipe successfully');
+          setImageUrl('');
+          setTitle('');
+          setCookingSteps('');
+          setIngredients('');
+          navigation.navigate('Home');
+        } else {
+          console.error('Error adding recipe:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error posting recipe:', error);
       }
-    } catch (error) {
-      console.error('Error posting recipe:', error);
     }
   };
 
@@ -92,6 +108,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                value={imageUrl}
                 // menampung aksi mengetik
                 onChangeText={text => setImageUrl(text)}
                 placeholder="upload gamabr makanan "
@@ -128,6 +145,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                value={title}
                 onChangeText={text => setTitle(text)}
                 placeholder="add title  "
                 style={{
@@ -163,6 +181,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                value={ingredients}
                 onChangeText={text => setIngredients(text)}
                 placeholder="add ur ingradient "
                 style={{
@@ -200,6 +219,7 @@ function AddRecipe() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                value={cookingSteps}
                 onChangeText={text => setCookingSteps(text)}
                 placeholder="How To Cook? "
                 style={{

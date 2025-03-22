@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,14 +7,74 @@ import {
   TextInput,
   ImageBackground,
   ScrollView,
+  Alert,
 } from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLOR_GRAY} from '../assets/color/color';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {BASE_URL} from '../../env';
 
 function Profile() {
   const navigation = useNavigation();
+
+  const [profile, setProfile] = useState(null);
+  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
+  const [phonenumber, setPhoneNumber] = useState('');
+  const [email, setEmail] = useState('');
+  const postProfil = async () => {
+    try {
+      const response = await axios.post(
+        `${BASE_URL}/API-RESEP/edit_profile.php`,
+        {
+          id: 6,
+          name: name,
+          username: username,
+          phonenumber: phonenumber,
+        },
+      );
+      if (response.data.status === 'success') {
+        console.log('Profile updated');
+        Alert.alert('Profile updated');
+      } else {
+        console.error('Profile update failed');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+  const fetchProfile = async () => {
+    const userId = await AsyncStorage.getItem('userId');
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/API-RESEP/get_profile.php?id=${userId}`,
+      );
+      if (response.data.status === 'success') {
+        console.log(response.data.data);
+        setProfile(response.data.data);
+        setName(response.data.data.name);
+        setUsername(response.data.data.username);
+        setPhoneNumber(response.data.data.phonenumber);
+        setEmail(response.data.data.email);
+      } else {
+        console.error('No recipes found');
+      }
+    } catch (error) {
+      console.error('Error fetching recipes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View
@@ -27,6 +87,34 @@ function Profile() {
             alignItems: 'center',
             paddingVertical: 30,
           }}>
+          <TouchableOpacity
+            onPress={async () => {
+              await AsyncStorage.removeItem('userId');
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Login'}],
+              });
+            }}
+            style={{
+              width: 30,
+              height: 30,
+              position: 'absolute',
+              right: 30,
+              top: 30,
+              borderRadius: 5,
+              backgroundColor: '#EFBC5D',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('./../assets/logout.png')}
+              resizeMode="contain"
+              style={{
+                width: 18,
+                height: 18,
+              }}
+            />
+          </TouchableOpacity>
           <Text
             style={{
               fontSize: 23,
@@ -64,7 +152,7 @@ function Profile() {
               fontSize: 18,
               fontWeight: 'bold',
             }}>
-            Fais Pratama
+            {profile?.name || '-'}
           </Text>
         </View>
         {/* USER NAME */}
@@ -77,6 +165,8 @@ function Profile() {
             Name
           </Text>
           <TextInput
+            onChangeText={text => setName(text)}
+            value={name}
             placeholder="Masukkan Nama"
             style={{
               marginTop: 10,
@@ -84,14 +174,14 @@ function Profile() {
               paddingHorizontal: 20,
               height: 50,
               width: '100%',
-              color: '#EFBC5D',
+              color: COLOR_GRAY.DARK,
               borderRadius: 10,
               borderColor: COLOR_GRAY.LIGHTEST,
               backgroundColor: COLOR_GRAY.LIGHTEST,
               borderWidth: 2,
             }}
           />
-          {/* password */}
+          {/* usernsme */}
           <View
             style={{
               flexDirection: 'row',
@@ -109,6 +199,8 @@ function Profile() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                onChangeText={text => setUsername(text)}
+                value={username}
                 placeholder="Masukkan Username"
                 style={{
                   paddingHorizontal: 20,
@@ -117,6 +209,7 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
+                  color: COLOR_GRAY.DARK,
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
@@ -149,6 +242,8 @@ function Profile() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                onChangeText={text => setPhoneNumber(text)}
+                value={phonenumber}
                 placeholder="Masukkan Nomor Telepon"
                 style={{
                   paddingHorizontal: 20,
@@ -157,6 +252,7 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
+                  color: COLOR_GRAY.DARK,
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
@@ -189,6 +285,8 @@ function Profile() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                editable={false}
+                value={email}
                 placeholder="Masukkan Email"
                 style={{
                   paddingHorizontal: 20,
@@ -197,6 +295,7 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
+                  color: COLOR_GRAY.DARK,
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
@@ -213,7 +312,7 @@ function Profile() {
           </View>
         </View>
         {/* FORM */}
-        {/* Button logout */}
+        {/* Button save */}
         <View
           style={{
             paddingHorizontal: 30,
@@ -222,7 +321,8 @@ function Profile() {
           }}>
           <TouchableOpacity
             onPress={() => {
-              navigation.replace('Login');
+              //pnggil fungsi
+              postProfil();
             }}
             style={{
               backgroundColor: '#EFBC5D',
@@ -231,16 +331,6 @@ function Profile() {
               alignItems: 'center',
               borderRadius: 10,
             }}>
-            <Image
-              source={require('./../assets/logout.png')}
-              resizeMode="contain"
-              style={{
-                width: 18,
-                height: 18,
-                position: 'absolute',
-                left: 90,
-              }}
-            />
             <Text
               style={{
                 textAlign: 'center',
@@ -249,11 +339,11 @@ function Profile() {
                 letterSpacing: 1.5,
                 fontWeight: 'semibold',
               }}>
-              Log Out
+              Save
             </Text>
           </TouchableOpacity>
         </View>
-        {/* Button logout */}
+        {/* Button save */}
       </View>
     </ScrollView>
   );

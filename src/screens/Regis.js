@@ -4,6 +4,7 @@ import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import axios from 'axios';
+import {BASE_URL} from '../../env';
 
 function Regis() {
   const [email, setEmail] = React.useState('');
@@ -12,7 +13,7 @@ function Regis() {
   const postRegis = async () => {
     try {
       const response = await axios.post(
-        'http://192.168.183.118/API-RESEP/register.php',
+        `${BASE_URL}/API-RESEP/register.php`,
         {
           //nama body dan nama variabel
           email: email,
