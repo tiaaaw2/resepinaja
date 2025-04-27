@@ -19,18 +19,18 @@ import {BASE_URL} from '../../env';
 
 function Profile() {
   const navigation = useNavigation();
-
   const [profile, setProfile] = useState(null);
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const postProfil = async () => {
+    const userId = await AsyncStorage.getItem('userId');
     try {
       const response = await axios.post(
         `${BASE_URL}/API-RESEP/edit_profile.php`,
         {
-          id: 6,
+          id: userId,
           name: name,
           username: username,
           phonenumber: phonenumber,
@@ -137,12 +137,29 @@ function Profile() {
             style={{
               width: '100%',
               height: '100%',
-              borderRadius: 100,
+              borderRadius: 95,
             }}
             source={{
               uri: 'https://siplah-oss.tokoladang.co.id/merchant/17185/product/6lpxX1FSfLXdLpJQZCws5R0Lsih2IxxBfSgwGoxs.jpg',
             }}
           />
+          <TouchableOpacity
+            style={{
+              height: 22,
+              width: 22,
+              backgroundColor: '#fff',
+              position: 'absolute',
+              borderRadius: 10,
+              bottom: 4,
+              right: 4,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Image
+              source={require('./../assets/camera.png')}
+              style={{height: 20, width: 20}}
+            />
+          </TouchableOpacity>
         </ImageBackground>
         {/* IMAGE */}
         {/* NAME */}

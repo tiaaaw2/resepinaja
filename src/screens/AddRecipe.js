@@ -15,6 +15,7 @@ import {COLOR_GRAY} from '../assets/color/color';
 import axios from 'axios';
 import {BASE_URL} from '../../env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 function AddRecipe() {
   //
@@ -28,30 +29,57 @@ function AddRecipe() {
 
     const userId = await AsyncStorage.getItem('userId');
 
-    console.log('id', userId);
+    const payload = {
+      title: title,
+      id: parseInt(userId),
+      ingredients: ingredients,
+      steps: cookingSteps,
+      image: {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: 'photo.jpg',
+      },
+    };
+    console.log('id', imageUri);
+
+    // Only add photo if it exists
+    if (imageUri) {
+      payload.image = {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: imageName,
+      };
+    } else {
+      payload.image = null;
+    }
+
+    // Create FormData object
+    const formDataObj = new FormData();
+    Object.keys(payload).forEach(key => {
+      if (key === 'image' && payload.image) {
+        formDataObj.append('image', payload.image);
+      } else {
+        formDataObj.append(key, payload[key]);
+      }
+    });
+
+    console.log(formDataObj);
 
     if (userId) {
       try {
         const response = await axios.post(
           `${BASE_URL}/API-RESEP/post_resep.php`,
-          {
-            //nama body dan nama variabel
-            title: title,
-            id: parseInt(userId),
-            ingredients: ingredients,
-            steps: cookingSteps,
-            image_url: imageUrl,
-          },
+          formDataObj,
           {
             headers: {
-              'Content-Type': 'application/json',
+              'Content-Type': 'multipart/form-data',
             },
           },
         );
         if (response.data.status === 'success') {
           console.log('Recipe added successfully');
           Alert.alert('add Recipe successfully');
-          setImageUrl('');
+          setImageUri('');
           setTitle('');
           setCookingSteps('');
           setIngredients('');
@@ -63,6 +91,33 @@ function AddRecipe() {
         console.error('Error posting recipe:', error);
       }
     }
+  };
+
+  // upload gmbr
+  const [imageUri, setImageUri] = useState(null);
+  const [imageName, setImageName] = useState(null);
+
+  const options = {
+    mediaType: 'photo',
+    includeBase64: false,
+    maxHeight: 2000,
+    maxWidth: 2000,
+  };
+
+  const handleChoosePhoto = () => {
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        Alert.alert('Error', 'Failed to select image.  Please try again.');
+      } else {
+        const source = {uri: response.assets[0].uri};
+        console.log(source);
+        setImageUri(source.uri);
+        setImageName(response.assets[0].fileName);
+      }
+    });
   };
 
   const navigation = useNavigation();
@@ -107,11 +162,15 @@ function AddRecipe() {
               marginBottom: 10,
             }}>
             <View style={{flex: 1}}>
-              <TextInput
-                value={imageUrl}
-                // menampung aksi mengetik
-                onChangeText={text => setImageUrl(text)}
-                placeholder="upload gamabr makanan "
+              {imageUri && (
+                <Image
+                  source={{uri: imageUri}}
+                  style={{width: 200, height: 200, marginBottom: 20}}
+                />
+              )}
+
+              <TouchableOpacity
+                onPress={handleChoosePhoto}
                 style={{
                   paddingHorizontal: 20,
                   marginTop: 10,
@@ -122,14 +181,10 @@ function AddRecipe() {
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
-                }}
-              />
-              <TouchableOpacity
-                style={{
-                  position: 'absolute',
-                  right: 20,
-                  top: '35%',
-                }}></TouchableOpacity>
+                  justifyContent: 'center',
+                }}>
+                <Text style={{color: 'gray'}}>Upload gambar</Text>
+              </TouchableOpacity>
             </View>
           </View>
           {/* title */}

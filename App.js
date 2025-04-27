@@ -10,6 +10,7 @@ import Profile from './src/screens/Profile';
 import AddRecipe from './src/screens/AddRecipe';
 import Ingredients from './src/screens/Ingredients';
 import SplashScreen from './src/screens/SplashScreen';
+import MyRecipe from './src/screens/MyRecipe';
 
 const Tab = createBottomTabNavigator();
 
@@ -22,6 +23,7 @@ function MyTabs() {
             Home: require('./src/assets/home.png'),
             AddRecipe: require('./src/assets/add.png'),
             Profile: require('./src/assets/profile.png'),
+            MyRecipe: require('./src/assets/MyRecipe.png'),
           };
 
           return (
@@ -58,6 +60,11 @@ function MyTabs() {
         name="AddRecipe"
         component={AddRecipe}
         options={{tabBarLabel: 'Tambah Resep'}}
+      />
+      <Tab.Screen
+        name="MyRecipe"
+        component={MyRecipe}
+        options={{tabBarLabel: 'Resepku'}}
       />
       <Tab.Screen
         name="Profile"

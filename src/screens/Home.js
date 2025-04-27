@@ -12,10 +12,12 @@ import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import ProfileInitial from '../components/ProfileInitial';
 import {BASE_URL} from '../../env';
+import {SearchBar} from '@rneui/themed';
 
 function Home() {
   const navigation = useNavigation();
   const [recipes, setRecipes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,10 +30,50 @@ function Home() {
       if (response.data.status === 'success') {
         setRecipes(response.data.data);
       } else {
-        console.error('No recipes found');
+        // console.error('No recipes found');
+        setRecipes([]);
       }
     } catch (error) {
-      console.error('Error fetching recipes:', error);
+      setRecipes([]);
+
+      // console.error('Error fetching recipes:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [debouncedText, setDebouncedText] = useState('');
+
+  // Debounce effect
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedText(searchQuery);
+    }, 500); // 500ms setelah berhenti mengetik
+
+    return () => clearTimeout(timer); // clear saat user masih mengetik
+  }, [searchQuery]);
+
+  // Effect saat debounce selesai
+  useEffect(() => {
+    if (debouncedText !== '') {
+      searchRecipes(debouncedText); // Panggil fungsi cari
+    }
+  }, [debouncedText]);
+
+  const searchRecipes = async () => {
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/API-RESEP/search_resep.php?search=${searchQuery}`,
+      );
+      if (response.data.status === 'success') {
+        setRecipes(response.data.data);
+      } else {
+        setRecipes([]);
+        // console.error('No recipes found');
+      }
+    } catch (error) {
+      setRecipes([]);
+      // console.error('Error fetching recipes:', error);
     } finally {
       setLoading(false);
     }
@@ -70,7 +112,7 @@ function Home() {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      <View style={{padding: 25}}>
+      <View style={{padding: 25, flex: 1}}>
         {/* HEADER */}
         <View>
           <Text style={{fontSize: 25, fontWeight: 'bold', marginTop: 7}}>
@@ -81,10 +123,13 @@ function Home() {
           </Text>
         </View>
 
+        <View style={{}}></View>
         {/* SEARCH BAR */}
-        <View style={{paddingHorizontal: 6}}>
+        <View style={{marginHorizontal: -4}}>
           <TextInput
             placeholder="Search recipe"
+            onChangeText={text => setSearchQuery(text)}
+            // value={this.state.value}
             style={{
               marginTop: 10,
               marginBottom: 40,
@@ -100,7 +145,15 @@ function Home() {
         </View>
 
         {/* RECIPE LIST */}
-        <View>
+        <View style={{marginHorizontal: -19}}>
+          {recipes.length === 0 && (
+            <View style={{alignItems: 'center'}}>
+              <Image
+                source={require('./../assets/notfound2.png')}
+                style={{height: 200, width: 200, marginTop: '20%'}}
+              />
+            </View>
+          )}
           {recipes.map((item, index) => (
             <TouchableOpacity
               key={index}
@@ -109,13 +162,13 @@ function Home() {
                   title: item.title,
                   ingred: item.ingredients,
                   step: item.steps,
-                  gbr: item.image_url,
+                  gbr: BASE_URL + '/api-resep/' + item.image_url,
                 });
               }}>
               <View style={{margin: 5}}>
                 <View>
                   <Image
-                    source={{uri: item.image_url}}
+                    source={{uri: BASE_URL + '/api-resep/' + item.image_url}}
                     style={{
                       width: '97%',
                       height: 170,
