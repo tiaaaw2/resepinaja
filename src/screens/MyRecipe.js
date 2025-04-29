@@ -9,7 +9,11 @@ import {
   ScrollView,
   RefreshControl,
 } from 'react-native';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import axios from 'axios';
@@ -19,9 +23,16 @@ import {BASE_URL} from '../../env';
 function MyRecipe() {
   const [myRecipe, setMyRecipes] = useState([]);
 
-  useEffect(() => {
-    fetchRecipes();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      // Do something when the screen is focused
+      fetchRecipes();
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, []),
+  );
 
   const fetchRecipes = async () => {
     const userId = await AsyncStorage.getItem('userId');
@@ -147,13 +158,17 @@ function MyRecipe() {
                     style={{
                       marginTop: 5,
                       fontSize: 13,
-                      backgroundColor: 'aqua',
-                      borderRadius: 5,
+                      backgroundColor:
+                        item.status === 0 ? '#FCF259' : '#67AE6E',
+                      fontWeight: 'bold',
+                      color: item.status === 0 ? 'black' : 'white',
+                      fontSize: 11,
+                      borderRadius: 3,
                       width: 60,
                       textAlign: 'center',
                       paddingVertical: 2,
                     }}>
-                    hihiihi
+                    {item.status === 0 ? 'pending' : 'upload'}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -191,7 +206,7 @@ function MyRecipe() {
                       width: 25,
                     }}
                   />
-                </TouchableOpacity>{' '}
+                </TouchableOpacity>
               </View>
             </View>
           ))}

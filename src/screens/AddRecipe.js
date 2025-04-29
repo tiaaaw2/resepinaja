@@ -83,7 +83,7 @@ function AddRecipe() {
           setTitle('');
           setCookingSteps('');
           setIngredients('');
-          navigation.navigate('Home');
+          navigation.navigate('MyRecipe');
         } else {
           console.error('Error adding recipe:', response.data.message);
         }
