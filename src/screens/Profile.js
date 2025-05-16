@@ -25,9 +25,11 @@ function Profile() {
   const [username, setUsername] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
 
   const [imageUri, setImageUri] = useState(null);
   const [imageName, setImageName] = useState(null);
+
   const postProfil = async () => {
     const userId = await AsyncStorage.getItem('userId');
 
@@ -75,6 +77,7 @@ function Profile() {
       if (response.data.status === 'success') {
         console.log('Profile updated');
         Alert.alert('Profile updated');
+        setIsEdit(false);
       } else {
         console.error('Profile update failed');
       }
@@ -203,7 +206,9 @@ function Profile() {
             }}
             source={{uri: imageUri}}
           />
+          {/* gntu foto */}
           <TouchableOpacity
+            disabled={!isEdit}
             onPress={handleChoosePhoto}
             style={{
               height: 22,
@@ -245,6 +250,7 @@ function Profile() {
           <TextInput
             onChangeText={text => setName(text)}
             value={name}
+            editable={isEdit}
             placeholder="Masukkan Nama"
             style={{
               marginTop: 10,
@@ -279,6 +285,7 @@ function Profile() {
               <TextInput
                 onChangeText={text => setUsername(text)}
                 value={username}
+                editable={isEdit}
                 placeholder="Masukkan Username"
                 style={{
                   paddingHorizontal: 20,
@@ -322,6 +329,7 @@ function Profile() {
               <TextInput
                 onChangeText={text => setPhoneNumber(text)}
                 value={phonenumber}
+                editable={isEdit}
                 placeholder="Masukkan Nomor Telepon"
                 style={{
                   paddingHorizontal: 20,
@@ -363,6 +371,7 @@ function Profile() {
             }}>
             <View style={{flex: 1}}>
               <TextInput
+                // editable={isEdit}
                 editable={false}
                 value={email}
                 placeholder="Masukkan Email"
@@ -390,6 +399,40 @@ function Profile() {
           </View>
         </View>
         {/* FORM */}
+
+        {/* button edit */}
+        <View
+          style={{
+            paddingHorizontal: 30,
+            marginTop: -13,
+            marginBottom: 20,
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              // Toggle edit mode
+              setIsEdit(!isEdit);
+              if (isEdit) fetchProfile();
+            }}
+            style={{
+              backgroundColor: isEdit ? 'gray' : 'red',
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 10,
+            }}>
+            <Text
+              style={{
+                textAlign: 'center',
+                color: 'white',
+                fontSize: 15,
+                letterSpacing: 1.5,
+                fontWeight: '600',
+              }}>
+              {isEdit ? 'Batal' : 'Edit'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        {/* button edit */}
         {/* Button save */}
         <View
           style={{
@@ -398,10 +441,11 @@ function Profile() {
             marginBottom: 20,
           }}>
           <TouchableOpacity
-            onPress={() => {
-              //pnggil fungsi
-              postProfil();
-            }}
+            onPress={postProfil}
+            // onPress={() => {
+            //   postProfil();
+            //   // setIsEdit(false);
+            // }}
             style={{
               backgroundColor: '#EFBC5D',
               height: 40,
