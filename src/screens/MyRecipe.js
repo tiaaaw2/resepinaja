@@ -162,7 +162,7 @@ function MyRecipe() {
                         item.status === 0 ? '#FCF259' : '#67AE6E',
                       fontWeight: 'bold',
                       color: item.status === 0 ? 'black' : 'white',
-                      fontSize: 11,
+                      fontSize: 12,
                       borderRadius: 3,
                       width: 60,
                       textAlign: 'center',

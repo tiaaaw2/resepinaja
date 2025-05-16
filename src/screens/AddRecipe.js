@@ -24,6 +24,9 @@ function AddRecipe() {
   const [cookingSteps, setCookingSteps] = useState('');
   const [ingredients, setIngredients] = useState('');
 
+  // upload gmbr
+  const [imageUri, setImageUri] = useState(null);
+  const [imageName, setImageName] = useState(null);
   const postRecipes = async () => {
     console.log('test');
 
@@ -40,7 +43,7 @@ function AddRecipe() {
         name: 'photo.jpg',
       },
     };
-    console.log('id', imageUri);
+    // console.log('id', imageUri);
 
     // Only add photo if it exists
     if (imageUri) {
@@ -92,10 +95,6 @@ function AddRecipe() {
       }
     }
   };
-
-  // upload gmbr
-  const [imageUri, setImageUri] = useState(null);
-  const [imageName, setImageName] = useState(null);
 
   const options = {
     mediaType: 'photo',

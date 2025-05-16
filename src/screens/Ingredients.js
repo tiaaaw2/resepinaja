@@ -20,22 +20,22 @@ function Ingredients({route}) {
 
   const formatText = text => {
     if (!text) return '';
+    // Mengganti pemisah koma dengan titik dan spasi untuk format lebih baik
     return text
       .split(',')
-      .map(item => `• \t${item.trim()}`)
-      .join('\n');
+      .map(item => `• \t${item.trim()}`) // Menggunakan bullet point dan indentasi
+      .join('\n'); // Gabungkan dengan newline
   };
 
   return (
-    <View>
+    <View style={{flex: 1}}>
+      {' '}
+      {/* Berikan flex: 1 ke View induk */}
       {/* HEADER */}
       <View
         style={{
-          // flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: 'red',
-          // padding: 30,
         }}>
         <ImageBackground
           source={{uri: gbr}}
@@ -43,7 +43,6 @@ function Ingredients({route}) {
             width: '100%',
             height: 250,
             borderRadius: 15,
-            // position: 'absolute',
             top: 0,
             left: 0,
             right: 0,
@@ -86,7 +85,7 @@ function Ingredients({route}) {
             </TouchableOpacity>
             <Text
               style={{
-                fontWeight: 700,
+                fontWeight: '700', // Gunakan string untuk fontWeight
                 fontSize: 20,
                 marginLeft: 10,
                 color: 'white',
@@ -106,7 +105,6 @@ function Ingredients({route}) {
           justifyContent: 'space-evenly',
           gap: 50,
           alignItems: 'center',
-          // backgroundColors: 'red',
         }}>
         {/* ingredients */}
         <TouchableOpacity
@@ -120,9 +118,16 @@ function Ingredients({route}) {
             style={{
               height: 20,
               width: 20,
+              tintColor: activeTab === 0 ? '#EFBC5D' : 'black',
             }}
           />
-          <Text style={{fontWeight: 'bold'}}>Ingredients</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: activeTab === 0 ? '#EFBC5D' : 'black',
+            }}>
+            Ingredients
+          </Text>
         </TouchableOpacity>
         {/* cooking steps */}
         <TouchableOpacity
@@ -136,22 +141,31 @@ function Ingredients({route}) {
             style={{
               height: 23,
               width: 23,
+              tintColor: activeTab === 1 ? '#EFBC5D' : 'black',
             }}
           />
-          <Text style={{fontWeight: 'bold'}}>Cooking Steps</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              color: activeTab === 1 ? '#EFBC5D' : 'black',
+            }}>
+            Cooking Steps
+          </Text>
         </TouchableOpacity>
       </View>
-      {activeTab === 0 ? (
-        <Text style={{marginLeft: 40, fontWeight: 500}}>
-          {formatText(ingred)}
-        </Text>
-      ) : (
-        <Text style={{marginLeft: 40, fontWeight: 500}}>
-          {formatText(step)}
-        </Text>
-      )}
-
       {/* 2 MENU */}
+      <ScrollView style={{flex: 1}} contentContainerStyle={{paddingBottom: 10}}>
+        {activeTab === 0 ? (
+          <Text style={{marginLeft: 40, fontWeight: '500'}}>
+            {/* Gunakan string untuk fontWeight */}
+            {formatText(ingred)}
+          </Text>
+        ) : (
+          <Text style={{marginLeft: 40, fontWeight: '500'}}>
+            {formatText(step)}
+          </Text>
+        )}
+      </ScrollView>
     </View>
   );
 }

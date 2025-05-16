@@ -210,12 +210,12 @@ function Home() {
                       marginLeft: 25,
                       marginTop: 135,
                     }}>
-                    <ProfileInitial
-                      nama={item.user_name}
+                    {/* <ProfileInitial
+                      nama={item?.user_name}
                       ukuran={25}
                       warnaLatar="#3498db"
                       warnaTeks="#ffffff"
-                    />
+                    /> */}
 
                     <View>
                       <Text

@@ -16,6 +16,7 @@ import {COLOR_GRAY} from '../assets/color/color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {BASE_URL} from '../../env';
+import {launchImageLibrary} from 'react-native-image-picker';
 
 function Profile() {
   const navigation = useNavigation();
@@ -24,16 +25,51 @@ function Profile() {
   const [username, setUsername] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
+
+  const [imageUri, setImageUri] = useState(null);
+  const [imageName, setImageName] = useState(null);
   const postProfil = async () => {
     const userId = await AsyncStorage.getItem('userId');
+
+    const payload = {
+      id: userId,
+      name: name,
+      username: username,
+      phonenumber: phonenumber,
+      image: {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: imageName,
+      },
+    };
+    // Only add photo if it exists
+    if (imageUri) {
+      payload.image = {
+        uri: imageUri,
+        type: 'image/jpeg',
+        name: imageName,
+      };
+    } else {
+      payload.image = null;
+    }
+    // Create FormData object
+    const formDataObj = new FormData();
+    Object.keys(payload).forEach(key => {
+      if (key === 'image' && payload.image) {
+        formDataObj.append('image', payload.image);
+      } else {
+        formDataObj.append(key, payload[key]);
+      }
+    });
+
     try {
       const response = await axios.post(
         `${BASE_URL}/API-RESEP/edit_profile.php`,
+        formDataObj,
         {
-          id: userId,
-          name: name,
-          username: username,
-          phonenumber: phonenumber,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
         },
       );
       if (response.data.status === 'success') {
@@ -43,12 +79,33 @@ function Profile() {
         console.error('Profile update failed');
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.log('Error updating profile:', error.response);
     } finally {
       setLoading(false);
     }
   };
 
+  const options = {
+    mediaType: 'photo',
+    includeBase64: false,
+    maxHeight: 2000,
+    maxWidth: 2000,
+  };
+  const handleChoosePhoto = () => {
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+        Alert.alert('Error', 'Failed to select image.  Please try again.');
+      } else {
+        const source = {uri: response.assets[0].uri};
+        console.log(source);
+        setImageUri(source.uri);
+        setImageName(response.assets[0].fileName);
+      }
+    });
+  };
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -65,6 +122,11 @@ function Profile() {
         setUsername(response.data.data.username);
         setPhoneNumber(response.data.data.phonenumber);
         setEmail(response.data.data.email);
+        setImageUri(
+          response.data.data.image_url
+            ? BASE_URL + '/api-resep/' + response.data.data.image_url
+            : '',
+        );
       } else {
         console.error('No recipes found');
       }
@@ -120,7 +182,7 @@ function Profile() {
               fontSize: 23,
               fontWeight: 'bold',
             }}>
-            Profile
+            Profil
           </Text>
         </View>
         {/* HEADER */}
@@ -139,11 +201,10 @@ function Profile() {
               height: '100%',
               borderRadius: 95,
             }}
-            source={{
-              uri: 'https://siplah-oss.tokoladang.co.id/merchant/17185/product/6lpxX1FSfLXdLpJQZCws5R0Lsih2IxxBfSgwGoxs.jpg',
-            }}
+            source={{uri: imageUri}}
           />
           <TouchableOpacity
+            onPress={handleChoosePhoto}
             style={{
               height: 22,
               width: 22,
@@ -169,7 +230,7 @@ function Profile() {
               fontSize: 18,
               fontWeight: 'bold',
             }}>
-            {profile?.name || '-'}
+            {name || '-'}
           </Text>
         </View>
         {/* USER NAME */}
