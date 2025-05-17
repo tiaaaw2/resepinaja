@@ -258,7 +258,7 @@ function Profile() {
               paddingHorizontal: 20,
               height: 50,
               width: '100%',
-              color: COLOR_GRAY.DARK,
+              color: isEdit ? COLOR_GRAY.DARK : COLOR_GRAY.LIGHT,
               borderRadius: 10,
               borderColor: COLOR_GRAY.LIGHTEST,
               backgroundColor: COLOR_GRAY.LIGHTEST,
@@ -294,7 +294,7 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
-                  color: COLOR_GRAY.DARK,
+                  color: isEdit ? COLOR_GRAY.DARK : COLOR_GRAY.LIGHT,
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
@@ -337,8 +337,8 @@ function Profile() {
                   marginBottom: 10,
                   height: 50,
                   width: '100%',
+                  color: isEdit ? COLOR_GRAY.DARK : COLOR_GRAY.LIGHT,
                   borderRadius: 10,
-                  color: COLOR_GRAY.DARK,
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
@@ -382,7 +382,7 @@ function Profile() {
                   height: 50,
                   width: '100%',
                   borderRadius: 10,
-                  color: COLOR_GRAY.DARK,
+                  color: COLOR_GRAY.LIGHT,
                   borderColor: COLOR_GRAY.LIGHTEST,
                   backgroundColor: COLOR_GRAY.LIGHTEST,
                   borderWidth: 2,
@@ -442,6 +442,7 @@ function Profile() {
           }}>
           <TouchableOpacity
             onPress={postProfil}
+            disabled={!isEdit}
             // onPress={() => {
             //   postProfil();
             //   // setIsEdit(false);

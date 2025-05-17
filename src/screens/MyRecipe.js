@@ -44,7 +44,7 @@ function MyRecipe() {
       if (response.data.status === 'success') {
         setMyRecipes(response.data.data);
       } else {
-        console.error('No recipes found');
+        // console.error('No recipes found');
         setMyRecipes([]);
       }
     } catch (error) {

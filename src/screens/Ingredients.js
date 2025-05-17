@@ -29,8 +29,6 @@ function Ingredients({route}) {
 
   return (
     <View style={{flex: 1}}>
-      {' '}
-      {/* Berikan flex: 1 ke View induk */}
       {/* HEADER */}
       <View
         style={{

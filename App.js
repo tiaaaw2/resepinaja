@@ -13,7 +13,6 @@ import SplashScreen from './src/screens/SplashScreen';
 import MyRecipe from './src/screens/MyRecipe';
 
 const Tab = createBottomTabNavigator();
-
 function MyTabs() {
   return (
     <Tab.Navigator

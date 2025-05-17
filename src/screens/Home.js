@@ -23,40 +23,33 @@ function Home() {
   useEffect(() => {
     fetchRecipes();
   }, []);
-
   const fetchRecipes = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/API-RESEP/get_resep.php`);
       if (response.data.status === 'success') {
         setRecipes(response.data.data);
       } else {
-        // console.error('No recipes found');
         setRecipes([]);
       }
     } catch (error) {
       setRecipes([]);
-
-      // console.error('Error fetching recipes:', error);
     } finally {
       setLoading(false);
     }
   };
 
   const [debouncedText, setDebouncedText] = useState('');
-
-  // Debounce effect
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedText(searchQuery);
-    }, 500); // 500ms setelah berhenti mengetik
+    }, 500);
 
-    return () => clearTimeout(timer); // clear saat user masih mengetik
+    return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // Effect saat debounce selesai
   useEffect(() => {
     if (debouncedText !== '') {
-      searchRecipes(debouncedText); // Panggil fungsi cari
+      searchRecipes(debouncedText);
     }
   }, [debouncedText]);
 
@@ -69,11 +62,9 @@ function Home() {
         setRecipes(response.data.data);
       } else {
         setRecipes([]);
-        // console.error('No recipes found');
       }
     } catch (error) {
       setRecipes([]);
-      // console.error('Error fetching recipes:', error);
     } finally {
       setLoading(false);
     }
@@ -102,7 +93,6 @@ function Home() {
     } else {
       ucapan = 'Selamat Malam!';
     }
-
     return ucapan;
   };
 
@@ -123,7 +113,6 @@ function Home() {
           </Text>
         </View>
 
-        <View style={{}}></View>
         {/* SEARCH BAR */}
         <View style={{marginHorizontal: -4}}>
           <TextInput

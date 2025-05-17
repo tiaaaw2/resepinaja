@@ -88,10 +88,10 @@ function AddRecipe() {
           setIngredients('');
           navigation.navigate('MyRecipe');
         } else {
-          console.error('Error adding recipe:', response.data.message);
+          console.log('Error adding recipe:', response.data.message);
         }
       } catch (error) {
-        console.error('Error posting recipe:', error);
+        console.log('Error posting recipe:', error);
       }
     }
   };
