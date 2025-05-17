@@ -140,6 +140,25 @@ function Profile() {
     }
   };
 
+  const handleLogout = () => {
+    Alert.alert('Logout', 'apakah anda yakin untuk logout?', [
+      {
+        text: 'Batal',
+        style: 'cancel',
+      },
+      {
+        text: 'OK bosss',
+        onPress: async () => {
+          await AsyncStorage.removeItem('userId');
+          navigation.reset({
+            index: 0,
+            routes: [{name: 'Login'}],
+          });
+        },
+      },
+    ]);
+  };
+
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
       <View
@@ -153,12 +172,8 @@ function Profile() {
             paddingVertical: 30,
           }}>
           <TouchableOpacity
-            onPress={async () => {
-              await AsyncStorage.removeItem('userId');
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'Login'}],
-              });
+            onPress={() => {
+              handleLogout();
             }}
             style={{
               width: 30,
@@ -448,7 +463,7 @@ function Profile() {
             //   // setIsEdit(false);
             // }}
             style={{
-              backgroundColor: '#EFBC5D',
+              backgroundColor: isEdit ? '#EFBC5D' : COLOR_GRAY.NORMAL,
               height: 40,
               justifyContent: 'center',
               alignItems: 'center',

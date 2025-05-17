@@ -27,9 +27,21 @@ function AddRecipe() {
   // upload gmbr
   const [imageUri, setImageUri] = useState(null);
   const [imageName, setImageName] = useState(null);
+  const handleRecipe = () => {
+    if (imageUri.length === 0 || !imageUri) {
+      Alert.alert('Please upload an image.');
+    } else if (title.length === 0) {
+      Alert.alert('Please enter the title.');
+    } else if (ingredients.length === 0) {
+      Alert.alert('Please enter the ingredients.');
+    } else if (cookingSteps.length === 0) {
+      Alert.alert('Please provide the cooking steps');
+    } else {
+      // Alert.alert('tes');
+      postRecipes();
+    }
+  };
   const postRecipes = async () => {
-    console.log('test');
-
     const userId = await AsyncStorage.getItem('userId');
 
     const payload = {
@@ -88,9 +100,11 @@ function AddRecipe() {
           setIngredients('');
           navigation.navigate('MyRecipe');
         } else {
+          Alert.alert('Error adding recipe:', response.data.message);
           console.log('Error adding recipe:', response.data.message);
         }
       } catch (error) {
+        Alert.alert('Error adding recipe:', error.response.data.message);
         console.log('Error posting recipe:', error);
       }
     }
@@ -308,7 +322,7 @@ function AddRecipe() {
           }}>
           <TouchableOpacity
             onPress={() => {
-              postRecipes();
+              handleRecipe();
             }}
             style={{
               backgroundColor: '#EFBC5D',

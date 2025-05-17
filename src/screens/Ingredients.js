@@ -154,12 +154,17 @@ function Ingredients({route}) {
       {/* 2 MENU */}
       <ScrollView style={{flex: 1}} contentContainerStyle={{paddingBottom: 10}}>
         {activeTab === 0 ? (
-          <Text style={{marginLeft: 40, fontWeight: '500'}}>
+          <Text
+            style={{
+              marginLeft: 40,
+              fontWeight: '500',
+              width: '80%',
+            }}>
             {/* Gunakan string untuk fontWeight */}
             {formatText(ingred)}
           </Text>
         ) : (
-          <Text style={{marginLeft: 40, fontWeight: '500'}}>
+          <Text style={{marginLeft: 40, fontWeight: '500', width: '80%'}}>
             {formatText(step)}
           </Text>
         )}

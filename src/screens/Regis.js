@@ -1,16 +1,44 @@
 import * as React from 'react';
-import {View, Text, TouchableOpacity, Image, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Alert,
+} from 'react-native';
 import {NavigationContainer, useNavigation} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import axios from 'axios';
 import {BASE_URL} from '../../env';
+import {COLOR_GRAY} from '../assets/color/color';
 
 function Regis() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [cPassword, setCPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
+  const handleRegister = () => {
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+    if (!validateEmail(email)) {
+      Alert.alert('format email salah');
+    } else if (password.length === 0) {
+      Alert.alert('password harus diisi');
+    } else if (password !== cPassword) {
+      Alert.alert('konfirmasi password tidak sesuai');
+    } else {
+      postRegis();
+    }
+
+    console.log(validateEmail(email));
+  };
   const postRegis = async () => {
+    setLoading(true);
     try {
       const response = await axios.post(
         `${BASE_URL}/API-RESEP/register.php`,
@@ -26,13 +54,18 @@ function Regis() {
         },
       );
       if (response.data.status === 'success') {
-        console.log('Recipe added successfully');
+        Alert.alert('berhasil');
         navigation.goBack();
       } else {
-        console.error('Error adding recipe:', response.data.message);
+        // console.error('Regis gagal', response.data.message);
+        Alert.alert('GAGAL REGSTER 1');
       }
     } catch (error) {
-      console.error('Error posting recipe:', error);
+      Alert.alert(error?.response?.data?.message || 'GAGAL REGSTER');
+
+      console.log('Error Register', error.response.data.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -112,7 +145,7 @@ function Regis() {
           padding: 20,
         }}>
         <TextInput
-          onChangeText={text => setPassword(text)}
+          onChangeText={text => setCPassword(text)}
           placeholder="Confirm Password"
           style={{
             marginTop: -20,
@@ -135,12 +168,13 @@ function Regis() {
           marginBottom: 20,
         }}>
         <TouchableOpacity
+          disabled={loading}
           onPress={() => {
-            postRegis();
+            handleRegister();
             // navigation.goBack();
           }}
           style={{
-            backgroundColor: '#EFBC5D',
+            backgroundColor: loading ? COLOR_GRAY.NORMAL : '#EFBC5D',
             height: 48,
             justifyContent: 'center',
             alignItems: 'center',
@@ -154,7 +188,7 @@ function Regis() {
               letterSpacing: 1,
               fontWeight: 'semi-bold',
             }}>
-            Sign Up
+            {loading ? 'Loading...' : 'Sign Up'}
           </Text>
         </TouchableOpacity>
       </View>

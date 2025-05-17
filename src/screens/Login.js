@@ -13,39 +13,64 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../env';
+import {COLOR_GRAY} from '../assets/color/color';
 
 function Login() {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
-  const postLogin = async () => {
-    try {
-      const response = await axios.post(
-        `${BASE_URL}/API-RESEP/login.php`,
-        {
-          //nama body dan nama variabel
-          email: email,
-          password: password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      if (response.data.status === 'success') {
-        console.log('login successfully');
-        console.log(response.data.user.id);
-        await AsyncStorage.setItem('userId', response.data.user.id.toString());
-        navigation.replace('MyTabs');
-      } else {
-        console.error('Error adding recipe:', response.data.message);
-        Alert.alert(response?.data?.message || 'Gagal Login');
-      }
-    } catch (error) {
-      console.error('Error posting recipe:', error);
-      Alert.alert(error.response.data.message || 'Gagal Login');
+  const handleLogin = () => {
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
     }
+    if (!validateEmail(email)) {
+      Alert.alert('format email salah');
+    } else if (password.length === 0) {
+      Alert.alert('password harus diisi');
+    } else {
+      postLogin();
+    }
+
+    console.log(validateEmail(email));
+  };
+  const postLogin = async () => {
+    setLoading(true);
+    setTimeout(async () => {
+      try {
+        const response = await axios.post(
+          `${BASE_URL}/API-RESEP/login.php`,
+          {
+            //nama body dan nama variabel
+            email: email,
+            password: password,
+          },
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          },
+        );
+        if (response.data.status === 'success') {
+          console.log('login successfully');
+          console.log(response.data.user.id);
+          await AsyncStorage.setItem(
+            'userId',
+            response.data.user.id.toString(),
+          );
+          navigation.replace('MyTabs');
+        } else {
+          console.log('Error adding recipe:', response.data.message);
+          Alert.alert(response?.data?.message || 'Gagal Login');
+        }
+      } catch (error) {
+        console.log('Error posting recipe:', error);
+        Alert.alert(error.response.data.message || 'Gagal Login');
+      } finally {
+        setLoading(false);
+      }
+    }, 1000);
   };
 
   const navigation = useNavigation();
@@ -128,12 +153,13 @@ function Login() {
           marginBottom: 20,
         }}>
         <TouchableOpacity
+          disabled={loading}
           onPress={() => {
             //pnggil fungsi
-            postLogin();
+            handleLogin();
           }}
           style={{
-            backgroundColor: '#EFBC5D',
+            backgroundColor: loading ? COLOR_GRAY.NORMAL : '#EFBC5D',
             height: 48,
             justifyContent: 'center',
             alignItems: 'center',
@@ -147,7 +173,7 @@ function Login() {
               letterSpacing: 1,
               fontWeight: 'semi-bold',
             }}>
-            Login
+            {loading ? 'Loading...' : 'Sign In'}
           </Text>
         </TouchableOpacity>
       </View>
