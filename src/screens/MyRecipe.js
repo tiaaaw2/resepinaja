@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BASE_URL} from '../../env';
 
 function MyRecipe() {
+  const navigation = useNavigation();
   const [myRecipe, setMyRecipes] = useState([]);
 
   useFocusEffect(
@@ -145,7 +146,16 @@ function MyRecipe() {
                 }}
               />
               <View style={{width: 170}}>
-                <TouchableOpacity style={{paddingLeft: 20}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate('Ingredients', {
+                      title: item.title,
+                      ingred: item.ingredients,
+                      step: item.steps,
+                      gbr: BASE_URL + '/api-resep/' + item.image_url,
+                    });
+                  }}
+                  style={{paddingLeft: 20}}>
                   <Text
                     style={{
                       fontSize: 16,

@@ -28,7 +28,7 @@ function AddRecipe() {
   const [imageUri, setImageUri] = useState(null);
   const [imageName, setImageName] = useState(null);
   const handleRecipe = () => {
-    if (imageUri.length === 0 || !imageUri) {
+    if (!imageUri || imageUri.length === 0) {
       Alert.alert('Please upload an image.');
     } else if (title.length === 0) {
       Alert.alert('Please enter the title.');

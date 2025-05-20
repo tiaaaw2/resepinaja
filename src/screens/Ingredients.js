@@ -66,7 +66,7 @@ function Ingredients({route}) {
             }}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('MyTabs');
+                navigation.goBack();
               }}
               style={{
                 position: 'absolute',
