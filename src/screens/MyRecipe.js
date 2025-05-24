@@ -26,12 +26,8 @@ function MyRecipe() {
 
   useFocusEffect(
     React.useCallback(() => {
-      // Do something when the screen is focused
       fetchRecipes();
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-      };
+      return () => {};
     }, []),
   );
 

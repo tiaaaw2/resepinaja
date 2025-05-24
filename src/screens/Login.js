@@ -32,7 +32,6 @@ function Login() {
     } else {
       postLogin();
     }
-
     console.log(validateEmail(email));
   };
   const postLogin = async () => {
@@ -61,11 +60,11 @@ function Login() {
           );
           navigation.replace('MyTabs');
         } else {
-          console.log('Error adding recipe:', response.data.message);
+          console.log(' login failed:', response.data.message);
           Alert.alert(response?.data?.message || 'Gagal Login');
         }
       } catch (error) {
-        console.log('Error posting recipe:', error);
+        console.log('login failed:', error);
         Alert.alert(error.response.data.message || 'Gagal Login');
       } finally {
         setLoading(false);
@@ -96,7 +95,6 @@ function Login() {
 
         <Text
           style={{
-            // backgroundColor: COLOR.RED,
             fontSize: 15,
             fontWeight: 'semibold',
             color: 'black',

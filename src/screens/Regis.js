@@ -92,7 +92,6 @@ function Regis() {
 
         <Text
           style={{
-            // backgroundColor: COLOR.RED,
             fontSize: 15,
             fontWeight: 'semibold',
             color: 'black',
@@ -171,7 +170,6 @@ function Regis() {
           disabled={loading}
           onPress={() => {
             handleRegister();
-            // navigation.goBack();
           }}
           style={{
             backgroundColor: loading ? COLOR_GRAY.NORMAL : '#EFBC5D',

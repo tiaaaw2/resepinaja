@@ -51,7 +51,7 @@ function MyTabs() {
         headerShown: false,
       })}>
       <Tab.Screen
-        name="Home"
+        name="Home" //dipanggil ketika navigasi
         component={Home}
         options={{tabBarLabel: 'Beranda'}}
       />
@@ -79,10 +79,7 @@ const Stack = createNativeStackNavigator();
 function RootStack() {
   return (
     // pindah pindah tab
-
-    <Stack.Navigator
-      initialRouteName="SplashScreen"
-      screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{headerShown: false}}>
       <Stack.Screen name="SplashScreen" component={SplashScreen} />
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Regis" component={Regis} />

@@ -19,7 +19,6 @@ function Home() {
   const [recipes, setRecipes] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     fetchRecipes();
   }, []);
@@ -199,13 +198,6 @@ function Home() {
                       marginLeft: 25,
                       marginTop: 135,
                     }}>
-                    {/* <ProfileInitial
-                      nama={item?.user_name}
-                      ukuran={25}
-                      warnaLatar="#3498db"
-                      warnaTeks="#ffffff"
-                    /> */}
-
                     <View>
                       <Text
                         style={{
