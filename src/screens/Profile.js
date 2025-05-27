@@ -9,9 +9,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import {NavigationContainer, useNavigation} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {useNavigation} from '@react-navigation/native';
 import {COLOR_GRAY} from '../assets/color/color';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
@@ -20,7 +18,6 @@ import {launchImageLibrary} from 'react-native-image-picker';
 
 function Profile() {
   const navigation = useNavigation();
-  const [profile, setProfile] = useState(null);
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [phonenumber, setPhoneNumber] = useState('');
@@ -119,8 +116,7 @@ function Profile() {
         `${BASE_URL}/API-RESEP/get_profile.php?id=${userId}`,
       );
       if (response.data.status === 'success') {
-        console.log(response.data.data);
-        setProfile(response.data.data);
+        console.log('test', response.data.data);
         setName(response.data.data.name);
         setUsername(response.data.data.username);
         setPhoneNumber(response.data.data.phonenumber);

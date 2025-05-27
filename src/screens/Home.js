@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import ProfileInitial from '../components/ProfileInitial';
+// import ProfileInitial from '../components/ProfileInitial';
 import {BASE_URL} from '../../env';
 import {SearchBar} from '@rneui/themed';
 

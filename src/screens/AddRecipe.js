@@ -251,8 +251,7 @@ function AddRecipe() {
               <TextInput
                 value={ingredients}
                 onChangeText={text => setIngredients(text)}
-                placeholder="add ur ingradient 
-                example: eggs, flour, etc."
+                placeholder="example: eggs, flour, etc."
                 style={{
                   paddingHorizontal: 20,
                   marginTop: 10,

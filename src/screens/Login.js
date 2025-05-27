@@ -140,6 +140,7 @@ function Login() {
             borderColor: '#EFBC5D',
             borderWidth: 3,
           }}
+          secureTextEntry={true}
         />
       </View>
       {/* FORM */}
